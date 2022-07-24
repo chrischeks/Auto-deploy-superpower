@@ -16,6 +16,7 @@ commands:
           name: Destroy front-end cloudformation stack
           when: on_fail
           command: |
+            aws s3 rm s3://udapeople-<< parameters.workflow-id >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow-id >>
 
 jobs:
