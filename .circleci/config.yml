@@ -16,7 +16,6 @@ commands:
           name: Destroy front-end cloudformation stack
           when: on_fail
           command: |
-            aws s3 rm s3://udapeople-<< parameters.workflow-id >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow-id >>
 
 jobs:
@@ -125,7 +124,6 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-              --region us-east-1
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -134,7 +132,6 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-              --region us-east-1
       - run:
           name: Add back-end ip to ansible inventory
           command: |
