@@ -160,6 +160,10 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: Install curl for other installations
+          command: |
+            apk add --update curl
+      - run:
           name: Install dependencies
           command: |
             # awscli
