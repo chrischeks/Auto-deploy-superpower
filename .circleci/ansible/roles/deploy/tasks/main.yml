@@ -1,20 +1,10 @@
 ---
-- name: "update apt packages."
-  become: yes
+- name: "extract artifact"
+  command: tar xzf backend/artifact.tar.gz
   apt:
     update_cache: yes
 
-- name: "upgrade packages"
-  become: yes
-  apt:
-    upgrade: yes
-
-- name: remove dependencies that are no longer required
-  become: yes
-  apt:
-    autoremove: yes
-
-- name: "install dependencies."
+- name: install nodejs and npm"
   become: yes
   apt:
     name: ["nodejs", "npm"]
@@ -28,3 +18,11 @@
     global: yes
     production: yes
     state: present
+
+- name: "stop default"
+  become: yes
+  command: pm2 stop default
+
+- name: "start app"
+  become: yes
+  command: pm2 start npm --start
