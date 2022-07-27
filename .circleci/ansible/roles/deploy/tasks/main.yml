@@ -1,8 +1,6 @@
 ---
 - name: "extract artifact"
   command: tar xzf backend/artifact.tar.gz
-  apt:
-    update_cache: yes
 
 - name: install nodejs and npm"
   become: yes
