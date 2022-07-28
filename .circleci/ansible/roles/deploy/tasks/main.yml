@@ -1,11 +1,13 @@
 ---
 - name: Copy artifact
+  become: yes
   copy:
-    src: "project/artifact.tar.gz"
-    dest: "~/"
+    src: artifact.tar.gz
+    dest: ~/
 
 - name: "extract artifact"
-  command: tar xzf artifact.tar.gz
+  become: yes
+  command: tar -xvzf artifact.tar.gz
 
 - name: install nodejs and npm"
   become: yes
