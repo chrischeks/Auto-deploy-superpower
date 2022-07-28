@@ -313,10 +313,8 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=udapeople" "Name=instance-state-name,Values=running" \
-            --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeople" "Name=instance-state-name,Values=running" --output text)
+            echo backend ip - ${BACKEND_IP}
       - run:
           name: Backend smoke test.
           command: |
