@@ -25,9 +25,9 @@
     production: yes
     state: present
 
-- name: "stop default"
+- name: "Remove all processes"
   become: yes
-  command: pm2 stop default
+  command: pm2 delete all
 
 - name: "start app"
   become: yes
