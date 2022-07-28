@@ -27,7 +27,7 @@
 
 - name: "Remove all processes"
   become: yes
-  command: pm2 delete all
+  command: pm2 delete all -s
 
 - name: "start app"
   become: yes
