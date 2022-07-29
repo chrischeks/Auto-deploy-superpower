@@ -345,10 +345,10 @@ jobs:
             else
               return 1
             fi
-      # - destroy-environment:
-      #     workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
-      # - revert-migrations:
-      #     workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
 
 workflows:
   default:
@@ -373,5 +373,5 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-frontend, deploy-backend]
+      - smoke-test:
+          requires: [deploy-frontend, deploy-backend]
