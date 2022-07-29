@@ -304,6 +304,7 @@ jobs:
       - image: python:3.7-alpine3.16
     steps:
       - checkout
+      - run: sleep 15
       - run:
           name: Install dependencies
           command: |
