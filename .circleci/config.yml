@@ -44,7 +44,6 @@ commands:
           when: on_fail
           command: |
             export SUCCESS=$(https://keyvalue.immanuel.co/api/KeyVal/GetValue/migration_<< parameters.workflow-id >>)
-            echo "SUCCESS = ${API_URL}"
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -375,6 +374,10 @@ jobs:
             --stack-name InitialStack \
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
+            export OldWorkflowID=$(curl -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/xyz0h49e/workflowid/${CIRCLE_WORKFLOW_ID:0:7} -d "Content-Length: 50)"
+            echo ${OldWorkflowID}
+            export OldWorkflowID1=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/xyz0h49e/workflowid)
+            echo "udapeople-backend-${OldWorkflowID1}"
       - destroy-environment:
           workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
@@ -402,13 +405,15 @@ jobs:
           name: Remove old stacks and files
           command: |
             export OldWorkflowID=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/xyz0h49e/workflowid)
-            echo "${OldWorkflowID}"
+
+
+            echo ${OldWorkflowID}
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
             aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
             aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
-            export OldWorkflowID=curl -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/xyz0h49e/workflowid/${CIRCLE_WORKFLOW_ID:0:7} -d "Content-Length: 50"
+            export OldWorkflowID=$(curl -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/xyz0h49e/workflowid/${CIRCLE_WORKFLOW_ID:0:7} -d "Content-Length: 50)"
             echo "${OldWorkflowID}"
             fi
 
@@ -442,5 +447,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      # - cleanup:
+      #     requires: [cloudfront-update]
