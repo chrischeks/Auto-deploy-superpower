@@ -52,7 +52,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - print-a-message:
+      - build-backend:
           message: Hello
 
   build-backend:
