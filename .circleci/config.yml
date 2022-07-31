@@ -52,10 +52,15 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - print-a-message:
+          message: Hello
 
   build-backend:
     docker:
       - image: circleci/node:13.8.0
+    parameters:
+      message:
+        type: string
     steps:
       - checkout
       - restore_cache:
@@ -66,6 +71,7 @@ jobs:
             cd backend
             npm install
             npm run build
+            echo << parameters.message >>
 
   test-frontend:
     docker:
@@ -366,6 +372,7 @@ jobs:
   cleanup:
     docker:
       - image: amazon/aws-cli
+
     steps:
       - checkout
       - run:
