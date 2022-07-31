@@ -1,5 +1,22 @@
 version: "2.1"
 
+#https://keyvalue.immanuel.co/
+#Chech how long it exists on their end
+#curl -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/xyz0h49e/cheks/ude -d "Content-Length: 50"
+#curl https://keyvalue.immanuel.co/api/KeyVal/GetValue/xyz0h49e/cheks
+
+# {
+# 	"Version": "2012-10-17",
+# 	"Statement": [
+# 		{
+# 			"Effect": "Allow",
+# 			"Principal": "*",
+# 			"Action": "s3:GetObject",
+# 			"Resource": "arn:aws:s3:::udapeople-kk1j287dhjppmz111/*"
+# 		}
+# 	]
+# }
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -26,7 +43,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            export SUCCESS=$(curl --insecure https://kvdb.io/NzMBdE8qNSh9QxjAQRDj8S/migration_<< parameters.workflow-id >>)
+            export SUCCESS=$(https://keyvalue.immanuel.co/api/KeyVal/GetValue/migration_<< parameters.workflow-id >>)
             echo "SUCCESS = ${API_URL}"
             if(( $SUCCESS==1 )); 
             then
@@ -212,7 +229,7 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-                curl --insecure https://kvdb.io/NzMBdE8qNSh9QxjAQRDj8S/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+                curl -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/xyz0h49e/migration_${CIRCLE_WORKFLOW_ID:0:7}/1 -d "Content-Length: 50"
             fi
       - destroy-environment:
           workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
@@ -353,6 +370,7 @@ jobs:
       - run:
           name: Update cloudfront distribution
           command: |
+            curl -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/xyz0h49e/workflowid/${CIRCLE_WORKFLOW_ID:0:7} -d "Content-Length: 50"
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --stack-name InitialStack \
@@ -384,14 +402,15 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            export OldWorkflowID=$(aws cloudformation \
-            list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-            --no-paginate --output text)
+            export OldWorkflowID=$(https://keyvalue.immanuel.co/api/KeyVal/GetValue/workflowid)
+            echo "${OldWorkflowID}"
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
             aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
             aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+            export OldWorkflowID=curl -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/xyz0h49e/workflowid/${CIRCLE_WORKFLOW_ID:0:7} -d "Content-Length: 50"
+            echo "${OldWorkflowID}"
             fi
 
 workflows:
