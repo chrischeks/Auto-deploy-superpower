@@ -52,7 +52,7 @@ jobs:
             export SAMPLE='udapeople-12345683'
             echo ${SAMPLE:10:17}
             export ABB=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/xyz0h49e/workflowid)
-            echo ${ABB:1:8}
+            echo ${ABB:1:7}
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
