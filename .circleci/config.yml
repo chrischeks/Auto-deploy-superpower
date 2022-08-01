@@ -49,9 +49,6 @@ jobs:
             cd frontend
             npm install
             npm run build
-            echo ${CIRCLE_WORKFLOW_ID}
-            echo ${CIRCLE_WORKFLOW_ID:0:7}
-            echo udapeople-12345:0:7
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
