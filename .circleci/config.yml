@@ -50,7 +50,7 @@ jobs:
             npm install
             npm run build
             export SAMPLE='udapeople-12345'
-            echo ${SAMPLE:0:7}
+            echo ${SAMPLE:11:}
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
