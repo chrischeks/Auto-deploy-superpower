@@ -65,6 +65,8 @@ jobs:
             cd frontend
             npm install
             npm run build
+            export OldWorkflowID=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/xyz0h49e/workflowid)
+            echo $OldWorkflowID
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
