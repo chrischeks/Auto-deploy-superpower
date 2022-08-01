@@ -49,8 +49,10 @@ jobs:
             cd frontend
             npm install
             npm run build
-            export SAMPLE='udapeople-12345'
-            echo ${SAMPLE:10:50}
+            export SAMPLE='udapeople-12345683'
+            echo ${SAMPLE:10:17}
+            export ABB=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/xyz0h49e/workflowid)
+            echo ${ABB:0:4}
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
