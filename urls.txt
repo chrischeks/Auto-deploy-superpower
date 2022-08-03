@@ -1,2 +1,5 @@
 [URL01] https://github.com/chrischeks/Auto-deploy-superpower 
-[URL01] http://udapeople-7d45957.s3-website-us-east-1.amazonaws.com/#/employees/new
+[URL02] http://udapeople-5af2516.s3-website-us-east-1.amazonaws.com
+[URL03] http://d2zgo4oz4js2yw.cloudfront.net/index.html
+[URL04] http://54.209.142.245:3030/api/status
+[URL05] http://ec2-44-201-187-225.compute-1.amazonaws.com:9090/targets
